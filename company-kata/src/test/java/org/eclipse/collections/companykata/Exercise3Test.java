@@ -12,12 +12,13 @@ package org.eclipse.collections.companykata;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.google.common.truth.Truth;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -36,7 +37,6 @@ public class Exercise3Test extends CompanyDomainForKata
     public void improveGetOrders()
     {
         // Delete this line - it's a reminder
-        Assert.fail("Improve getOrders() without breaking this test");
         assertThat(this.company.getOrders()).hasSize(5);
     }
 
@@ -46,8 +46,15 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void findItemNames()
     {
-        List<LineItem> allOrderedLineItems = null;
-        Set<String> actualItemNames = null;
+        List<LineItem> allOrderedLineItems = company.getOrders()
+                .stream()
+                .flatMap(o -> o.getLineItems().stream())
+                .collect(Collectors.toList());
+
+        Set<String> actualItemNames = allOrderedLineItems
+                .stream()
+                .map(LineItem::getName)
+                .collect(Collectors.toSet());
 
         assertThat(actualItemNames).isInstanceOf(Set.class);
         assertThat(actualItemNames.stream().findFirst().get()).isInstanceOf(String.class);
@@ -61,7 +68,10 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void findCustomerNames()
     {
-        List<String> names = null;
+        List<String> names = company.getCustomers()
+                .stream()
+                .map(Customer::getName)
+                .collect(Collectors.toList());
 
         List<String> expectedNames = Lists.newArrayList("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, names);

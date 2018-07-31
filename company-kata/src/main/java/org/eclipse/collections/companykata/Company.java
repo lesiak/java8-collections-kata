@@ -15,6 +15,7 @@ import org.junit.Assert;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * A company has a {@link ArrayList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
@@ -53,13 +54,8 @@ public class Company
      */
     public List<Order> getOrders()
     {
-        Assert.fail("Refactor this code to use Java8 streams as part of Exercise 3");
-        List<Order> orders = new ArrayList<>();
-        for (Customer customer : this.customers)
-        {
-            orders.addAll(customer.getOrders());
-        }
-        return orders;
+        //Assert.fail("Refactor this code to use Java8 streams as part of Exercise 3");
+        return customers.stream().flatMap(c -> c.getOrders().stream()).collect(Collectors.toList());
     }
 
     public Customer getMostRecentCustomer()
