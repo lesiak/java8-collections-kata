@@ -10,20 +10,20 @@
 
 package org.eclipse.collections.companykata;
 
-import org.eclipse.collections.api.block.function.Function;
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.set.MutableSet;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.Sets;
-import org.eclipse.collections.impl.test.Verify;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.google.common.truth.Truth;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.Set;
+
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * Below are links to APIs that may be helpful during these exercises.
  *
- * {@link MutableList#flatCollect(Function)}<br>
- * {@link MutableList#collect(Function)}<br>
  *
  * @see <a href="http://eclipse.github.io/eclipse-collections-kata/company-kata/#/8">Exercise 3 Slides</a>
  */
@@ -37,7 +37,7 @@ public class Exercise3Test extends CompanyDomainForKata
     {
         // Delete this line - it's a reminder
         Assert.fail("Improve getOrders() without breaking this test");
-        Verify.assertSize(5, this.company.getOrders());
+        assertThat(this.company.getOrders()).hasSize(5);
     }
 
     /**
@@ -46,13 +46,13 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void findItemNames()
     {
-        MutableList<LineItem> allOrderedLineItems = null;
-        MutableSet<String> actualItemNames = null;
+        List<LineItem> allOrderedLineItems = null;
+        Set<String> actualItemNames = null;
 
-        Verify.assertInstanceOf(MutableSet.class, actualItemNames);
-        Verify.assertInstanceOf(String.class, actualItemNames.getFirst());
+        assertThat(actualItemNames).isInstanceOf(Set.class);
+        assertThat(actualItemNames.stream().findFirst().get()).isInstanceOf(String.class);
 
-        MutableSet<String> expectedItemNames = Sets.mutable.with(
+        Set<String> expectedItemNames = Sets.newHashSet(
                 "shed", "big shed", "bowl", "cat", "cup", "chair", "dog",
                 "goldfish", "gnome", "saucer", "sofa", "table");
         Assert.assertEquals(expectedItemNames, actualItemNames);
@@ -61,9 +61,9 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void findCustomerNames()
     {
-        MutableList<String> names = null;
+        List<String> names = null;
 
-        MutableList<String> expectedNames = Lists.mutable.with("Fred", "Mary", "Bill");
+        List<String> expectedNames = Lists.newArrayList("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, names);
     }
 }

@@ -10,20 +10,24 @@
 
 package org.eclipse.collections.companykata;
 
-import org.eclipse.collections.api.block.function.Function;
-import org.eclipse.collections.api.block.predicate.Predicate;
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.test.Verify;
+import com.google.common.collect.Lists;
+import com.google.common.truth.Truth;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
+import java.util.stream.Collector;
+import java.util.stream.Stream;
 
 /**
  * Below are links to APIs that may be helpful during these exercises.
  *
  * <p/>
- * {@link MutableList#collect(Function)}<br>
- * {@link MutableList#select(Predicate)}<br>
+ * {@link Stream#collect(Collector)}<br>
+ * {@link Stream#map(Function)}<br>
+ * {@link Stream#mapToDouble(ToDoubleFunction)}
  *
  * @see <a href="http://eclipse.github.io/eclipse-collections-kata/company-kata/#/1">Exercise 1 Slides</a>
  */
@@ -36,9 +40,9 @@ public class Exercise1Test extends CompanyDomainForKata
     public void getCustomerNames()
     {
         Function<Customer, String> nameFunction = Customer::getName;
-        MutableList<String> customerNames = null;  // this.company.getCustomers()...
+        List<String> customerNames = null;  // this.company.getCustomers()...
 
-        MutableList<String> expectedNames = Lists.mutable.with("Fred", "Mary", "Bill");
+        List<String> expectedNames = Lists.newArrayList("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, customerNames);
     }
 
@@ -48,9 +52,9 @@ public class Exercise1Test extends CompanyDomainForKata
     @Test
     public void getCustomerCities()
     {
-        MutableList<String> customerCities = null;  // this.company.getCustomers()...
+        List<String> customerCities = null;  // this.company.getCustomers()...
 
-        MutableList<String> expectedCities = Lists.mutable.with("London", "Liphook", "London");
+        List<String> expectedCities = Lists.newArrayList("London", "Liphook", "London");
         Assert.assertEquals(expectedCities, customerCities);
     }
 
@@ -60,8 +64,8 @@ public class Exercise1Test extends CompanyDomainForKata
     @Test
     public void getLondonCustomers()
     {
-        MutableList<Customer> customersFromLondon = null; // this.company.getCustomers()...
+        List<Customer> customersFromLondon = null; // this.company.getCustomers()...
 
-        Verify.assertSize("Should be 2 London customers", 2, customersFromLondon);
+        Truth.assertThat(customersFromLondon).hasSize(2);
     }
 }

@@ -10,33 +10,18 @@
 
 package org.eclipse.collections.companykata;
 
-import org.eclipse.collections.api.block.function.Function;
-import org.eclipse.collections.api.block.predicate.Predicate;
-import org.eclipse.collections.api.block.predicate.Predicate2;
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.partition.list.PartitionMutableList;
-import org.eclipse.collections.impl.test.Verify;
+import com.google.common.truth.Truth;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Below are links to APIs that may be helpful during these exercises.
  *
  * <p/>
- * {@link MutableList#anySatisfy(Predicate)}<br>
- * {@link MutableList#anySatisfyWith(Predicate2, Object)}<br>
- * {@link MutableList#allSatisfy(Predicate)}<br>
- * {@link MutableList#allSatisfyWith(Predicate2, Object)}<br>
- * {@link MutableList#count(Predicate)}<br>
- * {@link MutableList#countWith(Predicate2, Object)}<br>
- * {@link MutableList#detect(Predicate)}<br>
- * {@link MutableList#detectWith(Predicate2, Object)}<br>
- * {@link MutableList#partition(Predicate)}<br>
- * {@link MutableList#partitionWith(Predicate2, Object)}<br>
- * {@link MutableList#select(Predicate)}<br>
- * {@link MutableList#selectWith(Predicate2, Object)}<br>
- * {@link MutableList#reject(Predicate)}<br>
- * {@link MutableList#rejectWith(Predicate2, Object)}<br>
+
  *
  * @see <a href="http://eclipse.github.io/eclipse-collections-kata/company-kata/#/3">Exercise 2 Slides</a>
  */
@@ -58,7 +43,7 @@ public class Exercise2Test extends CompanyDomainForKata
 
         Assert.assertTrue(
                 "predicate should accept Customers where city is London",
-                predicate.accept(customerFromLondon));
+                predicate.test(customerFromLondon));
     }
 
     @Test
@@ -85,15 +70,15 @@ public class Exercise2Test extends CompanyDomainForKata
     @Test
     public void getLondonCustomers()
     {
-        MutableList<Customer> customersFromLondon = null;
-        Verify.assertSize("Should be 2 London customers", 2, customersFromLondon);
+        List<Customer> customersFromLondon = null;
+        Truth.assertThat(customersFromLondon).hasSize(2);
     }
 
     @Test
     public void getCustomersWhoDontLiveInLondon()
     {
-        MutableList<Customer> customersNotFromLondon = null;
-        Verify.assertSize("customers not from London", 1, customersNotFromLondon);
+        List<Customer> customersNotFromLondon = null;
+        Truth.assertThat(customersNotFromLondon).hasSize(1);
     }
 
     /**
@@ -102,9 +87,11 @@ public class Exercise2Test extends CompanyDomainForKata
     @Test
     public void getCustomersWhoDoAndDoNotLiveInLondon()
     {
-        PartitionMutableList<Customer> customers = null;
-        Verify.assertSize("Should be 2 London customers", 2, customers.getSelected());
-        Verify.assertSize("customers not from London", 1, customers.getRejected());
+        List<Customer> customers = null;
+        List<Customer> selectedCustomers = null;
+        List<Customer> rejectedCustomers = null;
+        Truth.assertThat(selectedCustomers).hasSize(2);
+        Truth.assertThat(rejectedCustomers).hasSize(1);
     }
 
     /**

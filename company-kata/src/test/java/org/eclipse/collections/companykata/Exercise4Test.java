@@ -11,29 +11,15 @@
 package org.eclipse.collections.companykata;
 
 import java.util.List;
+import java.util.function.Predicate;
 
-import org.eclipse.collections.api.block.function.Function;
-import org.eclipse.collections.api.block.function.primitive.DoubleFunction;
-import org.eclipse.collections.api.block.predicate.Predicate;
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.list.primitive.MutableDoubleList;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.primitive.DoubleLists;
-import org.eclipse.collections.impl.utility.ArrayIterate;
-import org.eclipse.collections.impl.utility.ListIterate;
-import org.eclipse.collections.impl.utility.Iterate;
+import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Below are links to APIs that may be helpful during these exercises.
- *
- * {@link ArrayIterate#collect(Object[], Function)}
- * {@link ArrayIterate#count(Object[], Predicate)}
- * {@link ArrayIterate#detect(Object[], Predicate)}
- * {@link ListIterate#collect(List, Function)}
- * {@link ListIterate#collectDouble(List, DoubleFunction)}
- * {@link ListIterate#select(List, Predicate)}
+
  *
  * @see <a href="http://eclipse.github.io/eclipse-collections-kata/company-kata/#/12">Exercise 4 Slides</a>
  */
@@ -41,14 +27,14 @@ public class Exercise4Test extends CompanyDomainForKata
 {
     /**
      * Solve this without changing the return type of {@link Company#getSuppliers()}. Find the appropriate method on
-     * {@link ArrayIterate}.
+     * {@link }.
      */
     @Test
     public void findSupplierNames()
     {
-        MutableList<String> supplierNames = null;
+        List<String> supplierNames = null;
 
-        MutableList<String> expectedSupplierNames = Lists.mutable.with(
+        List<String> expectedSupplierNames = Lists.newArrayList(
                 "Shedtastic",
                 "Splendid Crocks",
                 "Annoying Pets",
@@ -93,9 +79,9 @@ public class Exercise4Test extends CompanyDomainForKata
     public void filterOrderValues()
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
-        MutableList<Double> orderValues = null;
-        MutableList<Double> filtered = null;
-        Assert.assertEquals(Lists.mutable.with(372.5, 1.75), filtered);
+        List<Double> orderValues = null;
+        List<Double> filtered = null;
+        Assert.assertEquals(Lists.newArrayList(372.5, 1.75), filtered);
     }
 
     /**
@@ -105,9 +91,9 @@ public class Exercise4Test extends CompanyDomainForKata
     public void filterOrderValuesUsingPrimitives()
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
-        MutableDoubleList orderValues = null;
-        MutableDoubleList filtered = null;
-        Assert.assertEquals(DoubleLists.mutable.with(372.5, 1.75), filtered);
+        List<Double> orderValues = null;
+        List<Double> filtered = null;
+        Assert.assertEquals(Lists.newArrayList(372.5, 1.75), filtered);
     }
 
     /**
@@ -117,7 +103,7 @@ public class Exercise4Test extends CompanyDomainForKata
     public void filterOrders()
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
-        MutableList<Order> filtered = null;
-        Assert.assertEquals(Lists.mutable.with(Iterate.getFirst(this.company.getMostRecentCustomer().getOrders())), filtered);
+        List<Order> filtered = null;
+       // Assert.assertEquals(Lists.newArrayList(Iterate.getFirst(this.company.getMostRecentCustomer().getOrders())), filtered);
     }
 }
