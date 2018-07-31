@@ -17,6 +17,8 @@ import org.junit.Test;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static com.google.common.truth.Truth.assertThat;
+
 /**
  * Below are links to APIs that may be helpful during these exercises.
  *
@@ -33,7 +35,7 @@ public class Exercise2Test extends CompanyDomainForKata
     @Test
     public void customerFromLondonPredicate()
     {
-        Predicate<Customer> predicate = null;
+        Predicate<Customer> predicate = c -> "London".equals(c.getCity());
         String predicateClass = predicate.getClass().getSimpleName();
         Assert.assertTrue(
                 "Solution should use Predicates.attributeEquals() or a lambda but used " + predicateClass,
@@ -50,35 +52,35 @@ public class Exercise2Test extends CompanyDomainForKata
     public void doAnyCustomersLiveInLondon()
     {
         boolean anyCustomersFromLondon = false;
-        Assert.assertTrue(anyCustomersFromLondon);
+        assertThat(anyCustomersFromLondon).isTrue();
     }
 
     @Test
     public void doAllCustomersLiveInLondon()
     {
         boolean allCustomersFromLondon = true;
-        Assert.assertFalse(allCustomersFromLondon);
+        assertThat(allCustomersFromLondon).isTrue();
     }
 
     @Test
     public void howManyCustomersLiveInLondon()
     {
         int numberOfCustomerFromLondon = 0;
-        Assert.assertEquals("Should be 2 London customers", 2, numberOfCustomerFromLondon);
+        assertThat(numberOfCustomerFromLondon).isEqualTo(2);
     }
 
     @Test
     public void getLondonCustomers()
     {
         List<Customer> customersFromLondon = null;
-        Truth.assertThat(customersFromLondon).hasSize(2);
+        assertThat(customersFromLondon).hasSize(2);
     }
 
     @Test
     public void getCustomersWhoDontLiveInLondon()
     {
         List<Customer> customersNotFromLondon = null;
-        Truth.assertThat(customersNotFromLondon).hasSize(1);
+        assertThat(customersNotFromLondon).hasSize(1);
     }
 
     /**
@@ -90,8 +92,8 @@ public class Exercise2Test extends CompanyDomainForKata
         List<Customer> customers = null;
         List<Customer> selectedCustomers = null;
         List<Customer> rejectedCustomers = null;
-        Truth.assertThat(selectedCustomers).hasSize(2);
-        Truth.assertThat(rejectedCustomers).hasSize(1);
+        assertThat(selectedCustomers).hasSize(2);
+        assertThat(rejectedCustomers).hasSize(1);
     }
 
     /**
@@ -101,7 +103,7 @@ public class Exercise2Test extends CompanyDomainForKata
     public void findMary()
     {
         Customer mary = this.company.getCustomerNamed("Mary");
-        Assert.assertEquals("customer's name should be Mary", "Mary", mary.getName());
+        assertThat(mary.getName()).isEqualTo("Mary");
     }
 
     /**
@@ -111,8 +113,6 @@ public class Exercise2Test extends CompanyDomainForKata
     public void findPete()
     {
         Customer pete = this.company.getCustomerNamed("Pete");
-        Assert.assertNull(
-                "Should be null as there is no customer called Pete",
-                pete);
+        assertThat(pete).isNull();
     }
 }
