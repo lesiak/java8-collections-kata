@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -42,7 +43,10 @@ public class Exercise1Test extends CompanyDomainForKata
     public void getCustomerNames()
     {
         Function<Customer, String> nameFunction = Customer::getName;
-        List<String> customerNames = null;  // this.company.getCustomers()...
+        List<String> customerNames = this.company.getCustomers()
+                .stream()
+                .map(nameFunction)
+                .collect(Collectors.toList());
 
         assertThat(customerNames).containsExactly("Fred", "Mary", "Bill").inOrder();
     }
@@ -53,7 +57,10 @@ public class Exercise1Test extends CompanyDomainForKata
     @Test
     public void getCustomerCities()
     {
-        List<String> customerCities = null;  // this.company.getCustomers()...
+        List<String> customerCities = this.company.getCustomers()
+                .stream()
+                .map(Customer::getCity)
+                .collect(Collectors.toList());
 
         assertThat(customerCities).containsExactly("London", "Liphook", "London").inOrder();
     }
@@ -64,7 +71,10 @@ public class Exercise1Test extends CompanyDomainForKata
     @Test
     public void getLondonCustomers()
     {
-        List<Customer> customersFromLondon = null; // this.company.getCustomers()...
+        List<Customer> customersFromLondon = this.company.getCustomers()
+                .stream()
+                .filter(c -> "London".equals(c.getCity()))
+                .collect(Collectors.toList());
 
         assertThat(customersFromLondon).hasSize(2);
     }
