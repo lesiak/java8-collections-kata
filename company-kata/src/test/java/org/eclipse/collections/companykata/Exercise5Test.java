@@ -10,6 +10,11 @@
 
 package org.eclipse.collections.companykata;
 
+import com.google.common.collect.Lists;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
@@ -17,10 +22,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.google.common.collect.Lists;
-import com.google.common.truth.Truth;
-import org.junit.Assert;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * Below are links to APIs that may be helpful during these exercises.
@@ -34,8 +36,7 @@ import org.junit.Test;
 public class Exercise5Test extends CompanyDomainForKata
 {
     /**
-     * Same exercise but don't use static utility - refactor the type of orders and {@link Customer#getOrders()}
-     * instead.
+     * Same exercise but don't use static utility
      * Get the order values that are greater than 1.5.
      */
     @Test
@@ -46,9 +47,10 @@ public class Exercise5Test extends CompanyDomainForKata
         List<Double> filtered = orderValues.stream().filter(v -> v > 1.5).collect(Collectors.toList());
 
         Assert.assertEquals(Lists.newArrayList(372.5, 1.75), filtered);
-        Truth.assertThat(this.company.getMostRecentCustomer().getOrders()).isInstanceOf(List.class);
+        assertThat(this.company.getMostRecentCustomer().getOrders()).isInstanceOf(List.class);
         this.company.getMostRecentCustomer().getOrders().add(null);
-       // Verify.assertContains("Don't return a copy from Customer.getOrders(). The field should be a MutableList.", null, this.company.getMostRecentCustomer().getOrders());
+        //"Don't return a copy from Customer.getOrders(). The field should be a mutable List."
+        assertThat(this.company.getMostRecentCustomer().getOrders()).contains(null);
     }
 
     /**
@@ -58,10 +60,9 @@ public class Exercise5Test extends CompanyDomainForKata
     public void filterOrderValuesUsingPrimitives()
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
-       // MutableDoubleList orderValues = null;
-      //  MutableDoubleList filtered = orderValues.select(DoublePredicates.greaterThan(1.5));
-
-      //  Assert.assertEquals(DoubleLists.mutable.with(372.5, 1.75), filtered);
+        List<Double> orderValues = null;
+        List<Double> filtered = orderValues.stream().filter(v -> v > 1.5).collect(Collectors.toList());
+        assertThat(filtered).containsExactly(372.5, 1.75).inOrder();
     }
 
     /**
@@ -75,9 +76,10 @@ public class Exercise5Test extends CompanyDomainForKata
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
         List<Order> filtered = null;
 
-     //   Assert.assertEquals(Lists.newArrayList(Iterate.getFirst(this.company.getMostRecentCustomer().getOrders())), filtered);
-     //   Verify.assertInstanceOf(MutableList.class, this.company.getMostRecentCustomer().getOrders());
+        assertThat(filtered).isEqualTo(Lists.newArrayList(this.company.getMostRecentCustomer().getOrders()).stream().findFirst().get());
+        assertThat(this.company.getMostRecentCustomer().getOrders()).isInstanceOf(ArrayList.class);
         this.company.getMostRecentCustomer().getOrders().add(null);
-      //  Verify.assertContains("Don't return a copy from Customer.getOrders(). The field should be a MutableList.", null, this.company.getMostRecentCustomer().getOrders());
+        //"Don't return a copy from Customer.getOrders(). The field should be a mutable List."
+        assertThat(this.company.getMostRecentCustomer().getOrders()).contains(null);
     }
 }
