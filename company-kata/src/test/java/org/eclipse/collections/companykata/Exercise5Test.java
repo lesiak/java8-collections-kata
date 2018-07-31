@@ -43,7 +43,11 @@ public class Exercise5Test extends CompanyDomainForKata
     public void filterOrderValues()
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
-        List<Double> orderValues = null;
+        List<Double> orderValues = orders
+                .stream()
+                .map(Order::getValue)
+                .collect(Collectors.toList());
+
         List<Double> filtered = orderValues.stream().filter(v -> v > 1.5).collect(Collectors.toList());
 
         Assert.assertEquals(Lists.newArrayList(372.5, 1.75), filtered);
@@ -60,7 +64,12 @@ public class Exercise5Test extends CompanyDomainForKata
     public void filterOrderValuesUsingPrimitives()
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
-        List<Double> orderValues = null;
+        List<Double> orderValues =  orders
+                .stream()
+                .mapToDouble(Order::getValue)
+                .boxed()
+                .collect(Collectors.toList());
+
         List<Double> filtered = orderValues.stream().filter(v -> v > 1.5).collect(Collectors.toList());
         assertThat(filtered).containsExactly(372.5, 1.75).inOrder();
     }
@@ -74,9 +83,11 @@ public class Exercise5Test extends CompanyDomainForKata
     public void filterOrders()
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
-        List<Order> filtered = null;
+        List<Order> filtered = orders.stream()
+                .filter(o -> o.getValue() > 2.0)
+                .collect(Collectors.toList());
 
-        assertThat(filtered).isEqualTo(Lists.newArrayList(this.company.getMostRecentCustomer().getOrders()).stream().findFirst().get());
+        assertThat(filtered).containsExactly(this.company.getMostRecentCustomer().getOrders().stream().findFirst().get());
         assertThat(this.company.getMostRecentCustomer().getOrders()).isInstanceOf(ArrayList.class);
         this.company.getMostRecentCustomer().getOrders().add(null);
         //"Don't return a copy from Customer.getOrders(). The field should be a mutable List."
