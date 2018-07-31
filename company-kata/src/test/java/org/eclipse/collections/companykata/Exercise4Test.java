@@ -14,8 +14,11 @@ import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -29,12 +32,14 @@ public class Exercise4Test extends CompanyDomainForKata
 {
     /**
      * Solve this without changing the return type of {@link Company#getSuppliers()}. Find the appropriate method on
-     * {@link }.
+     * {@link Arrays}.
      */
     @Test
     public void findSupplierNames()
     {
-        List<String> supplierNames = null;
+        List<String> supplierNames = Arrays.stream(company.getSuppliers())
+                .map(Supplier::getName)
+                .collect(Collectors.toList());
 
         assertThat(supplierNames).containsExactly(
                 "Shedtastic",
@@ -53,8 +58,10 @@ public class Exercise4Test extends CompanyDomainForKata
     @Test
     public void countSuppliersWithMoreThanTwoItems()
     {
-        Predicate<Supplier> moreThanTwoItems = null;
-        int suppliersWithMoreThanTwoItems = 0;
+        Predicate<Supplier> moreThanTwoItems = supplier -> supplier.getItemNames().length > 2;
+        long suppliersWithMoreThanTwoItems = Arrays.stream(company.getSuppliers())
+                .filter(moreThanTwoItems)
+                .count();
         Assert.assertEquals("suppliers with more than 2 items", 5, suppliersWithMoreThanTwoItems);
     }
 
@@ -65,12 +72,14 @@ public class Exercise4Test extends CompanyDomainForKata
     public void whoSuppliesSandwichToaster()
     {
         // Create a Predicate that will check to see if a Supplier supplies a "sandwich toaster".
-        Predicate<Supplier> suppliesToaster = null;
+        Predicate<Supplier> suppliesToaster = supplier -> Arrays.asList(supplier.getItemNames()).indexOf("sandwich toaster") >= 0;
 
         // Find one supplier that supplies toasters.
-        Supplier toasterSupplier = null;
-        assertThat(toasterSupplier).isNotNull();
-        assertThat(toasterSupplier.getName()).isEqualTo("Doxins");
+        Optional<Supplier> toasterSupplier = Arrays.stream(company.getSuppliers())
+                .filter(suppliesToaster)
+                .findFirst();
+        assertThat(toasterSupplier.isPresent()).isTrue();;
+        assertThat(toasterSupplier.orElseThrow(RuntimeException::new).getName()).isEqualTo("Doxins");
     }
 
     /**
@@ -80,8 +89,16 @@ public class Exercise4Test extends CompanyDomainForKata
     public void filterOrderValues()
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
-        List<Double> orderValues = null;
-        List<Double> filtered = null;
+        List<Double> orderValues = orders
+                .stream()
+                .map(Order::getValue)
+                .collect(Collectors.toList());
+
+        List<Double> filtered = orderValues
+                .stream()
+                .filter(v -> v > 1.5)
+                .collect(Collectors.toList());
+
         assertThat(filtered).containsExactly(372.5, 1.75).inOrder();
     }
 
@@ -92,8 +109,17 @@ public class Exercise4Test extends CompanyDomainForKata
     public void filterOrderValuesUsingPrimitives()
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
-        List<Double> orderValues = null;
-        List<Double> filtered = null;
+        List<Double> orderValues = orders
+                .stream()
+                .mapToDouble(Order::getValue)
+                .boxed()
+                .collect(Collectors.toList());
+
+        List<Double> filtered = orderValues
+                .stream()
+                .filter(v -> v > 1.5)
+                .collect(Collectors.toList());
+
         assertThat(filtered).containsExactly(372.5, 1.75).inOrder();
     }
 
@@ -104,7 +130,11 @@ public class Exercise4Test extends CompanyDomainForKata
     public void filterOrders()
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
-        List<Order> filtered = null;
-        assertThat(filtered).isEqualTo(Lists.newArrayList(this.company.getMostRecentCustomer().getOrders()).stream().findFirst().get());
+        List<Order> filtered = orders
+                .stream()
+                .filter(order -> order.getValue() > 2.0)
+                .collect(Collectors.toList());
+
+        assertThat(filtered).containsExactly(company.getMostRecentCustomer().getOrders().stream().findFirst().get());
     }
 }
