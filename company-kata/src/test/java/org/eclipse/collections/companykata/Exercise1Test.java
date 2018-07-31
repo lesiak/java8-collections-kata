@@ -21,6 +21,8 @@ import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
+import static com.google.common.truth.Truth.assertThat;
+
 /**
  * Below are links to APIs that may be helpful during these exercises.
  *
@@ -42,8 +44,7 @@ public class Exercise1Test extends CompanyDomainForKata
         Function<Customer, String> nameFunction = Customer::getName;
         List<String> customerNames = null;  // this.company.getCustomers()...
 
-        List<String> expectedNames = Lists.newArrayList("Fred", "Mary", "Bill");
-        Assert.assertEquals(expectedNames, customerNames);
+        assertThat(customerNames).containsExactly("Fred", "Mary", "Bill").inOrder();
     }
 
     /**
@@ -54,8 +55,7 @@ public class Exercise1Test extends CompanyDomainForKata
     {
         List<String> customerCities = null;  // this.company.getCustomers()...
 
-        List<String> expectedCities = Lists.newArrayList("London", "Liphook", "London");
-        Assert.assertEquals(expectedCities, customerCities);
+        assertThat(customerCities).containsExactly("London", "Liphook", "London").inOrder();
     }
 
     /**
@@ -66,6 +66,6 @@ public class Exercise1Test extends CompanyDomainForKata
     {
         List<Customer> customersFromLondon = null; // this.company.getCustomers()...
 
-        Truth.assertThat(customersFromLondon).hasSize(2);
+        assertThat(customersFromLondon).hasSize(2);
     }
 }
