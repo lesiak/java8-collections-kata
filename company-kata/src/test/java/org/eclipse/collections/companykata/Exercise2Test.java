@@ -15,6 +15,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -89,9 +90,9 @@ public class Exercise2Test extends CompanyDomainForKata
     @Test
     public void getCustomersWhoDoAndDoNotLiveInLondon()
     {
-        List<Customer> customers = null;
-        List<Customer> selectedCustomers = null;
-        List<Customer> rejectedCustomers = null;
+        Map<Boolean, List<Customer>> customers = null;
+        List<Customer> selectedCustomers = customers.get(true);
+        List<Customer> rejectedCustomers = customers.get(false);
         assertThat(selectedCustomers).hasSize(2);
         assertThat(rejectedCustomers).hasSize(1);
     }
