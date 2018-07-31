@@ -52,31 +52,7 @@
 
     <developers>
         <developer>
-            <name>Nikhil Nanivadekar</name>
-            <email>nikhil.nanivadekar@gs.com</email>
-        </developer>
-
-        <developer>
-            <name>Kristen O'Leary</name>
-            <email>kristen.oleary@gs.com</email>
-        </developer>
-
-        <developer>
-            <name>Mohammad A. Rezaei</name>
-            <email>mohammad.rezaei@gs.com</email>
-        </developer>
-
-        <developer>
-            <name>Donald Raab</name>
-            <email>donald.raab@bnymellon.com</email>
-        </developer>
-
-        <developer>
-            <name>Craig P. Motlin</name>
-        </developer>
-
-        <developer>
-            <name>Hiroshi Ito</name>
+            <name>Adam Lesiak</name>
         </developer>
 
     </developers>
@@ -103,24 +79,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.eclipse.collections</groupId>
-                <artifactId>eclipse-collections-api</artifactId>
-                <version>${eclipse.collections.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.eclipse.collections</groupId>
-                <artifactId>eclipse-collections</artifactId>
-                <version>${eclipse.collections.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.eclipse.collections</groupId>
-                <artifactId>eclipse-collections-testutils</artifactId>
-                <version>${eclipse.collections.version}</version>
-                <scope>test</scope>
-            </dependency>
 
             <dependency>
                 <groupId>junit</groupId>

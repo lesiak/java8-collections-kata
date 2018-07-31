@@ -10,19 +10,18 @@
 
 package org.eclipse.collections.companykata;
 
-import org.eclipse.collections.api.block.function.Function;
-import org.eclipse.collections.api.block.predicate.Predicate;
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.impl.list.mutable.FastList;
 import org.junit.Assert;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * A company has a {@link MutableList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
+ * A company has a {@link ArrayList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
  */
 public class Company
 {
     private final String name;
-    private final MutableList<Customer> customers = FastList.newList();
+    private final ArrayList<Customer> customers = new ArrayList<>();
 
     // Suppliers are array based. Refactor to a MutableList<Supplier>
     private Supplier[] suppliers = new Supplier[0];
@@ -42,7 +41,7 @@ public class Company
         this.customers.add(aCustomer);
     }
 
-    public MutableList<Customer> getCustomers()
+    public List<Customer> getCustomers()
     {
         return this.customers;
     }
@@ -50,12 +49,11 @@ public class Company
     /**
      * Remove the Assert.fail() and simplify getOrders().
      *
-     * @see org.eclipse.collections.api.RichIterable#flatCollect(Function)
      */
-    public MutableList<Order> getOrders()
+    public List<Order> getOrders()
     {
-        Assert.fail("Refactor this code to use Eclipse Collections as part of Exercise 3");
-        MutableList<Order> orders = FastList.newList();
+        Assert.fail("Refactor this code to use Java8 streams as part of Exercise 3");
+        List<Order> orders = new ArrayList<>();
         for (Customer customer : this.customers)
         {
             orders.addAll(customer.getOrders());
@@ -65,7 +63,7 @@ public class Company
 
     public Customer getMostRecentCustomer()
     {
-        return this.customers.getLast();
+        return this.customers.get(this.customers.size() - 1);
     }
 
     /**
@@ -92,7 +90,6 @@ public class Company
      * Remove the Assert.fail() and replace the null with an appropriate implementation.
      * Use a {@link Predicate} to find a {@link Customer} with the name given.
      *
-     * @see org.eclipse.collections.api.RichIterable#flatCollect(Function)
      */
     public Customer getCustomerNamed(String name)
     {

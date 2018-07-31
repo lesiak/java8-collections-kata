@@ -10,13 +10,7 @@
 
 package org.eclipse.collections.companykata;
 
-import org.eclipse.collections.api.block.function.primitive.DoubleFunction;
-import org.eclipse.collections.impl.block.function.AddFunction;
-import org.eclipse.collections.impl.collection.mutable.CollectionAdapter;
-import org.eclipse.collections.impl.utility.Iterate;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -68,13 +62,8 @@ public class Order
         return "order " + this.orderNumber + " items: " + this.lineItems.size();
     }
 
-    /**
-     * Refactor to use {@link org.eclipse.collections.api.RichIterable#sumOfDouble(DoubleFunction)}.
-     */
     public double getValue()
     {
-        Collection<Double> itemValues = Iterate.collect(this.lineItems, LineItem::getValue);
-
-        return CollectionAdapter.adapt(itemValues).injectInto(0.0, AddFunction.DOUBLE_TO_DOUBLE);
+        return this.lineItems.stream().mapToDouble(LineItem::getValue).sum();
     }
 }

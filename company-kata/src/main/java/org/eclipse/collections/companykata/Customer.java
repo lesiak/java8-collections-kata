@@ -10,12 +10,6 @@
 
 package org.eclipse.collections.companykata;
 
-import org.eclipse.collections.api.block.function.Function;
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.impl.block.function.AddFunction;
-import org.eclipse.collections.impl.utility.ListIterate;
-import org.junit.Assert;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +51,6 @@ public class Customer
 
     public double getTotalOrderValue()
     {
-        MutableList<Double> orderValues = ListIterate.collect(this.orders, Order::getValue);
-        return orderValues.injectInto(0.0, AddFunction.DOUBLE_TO_DOUBLE);
+        return this.orders.stream().mapToDouble(Order::getValue).sum();
     }
 }
