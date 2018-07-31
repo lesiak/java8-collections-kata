@@ -11,10 +11,12 @@
 package org.eclipse.collections.companykata;
 
 
-import org.junit.Assert;
+import com.google.common.collect.Iterables;
 import org.junit.Test;
 
 import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * Below are links to APIs that may be helpful during these exercises.
@@ -35,8 +37,8 @@ public class Exercise6Test extends CompanyDomainForKata
         List<Double> sortedTotalValues = null;
 
         // Don't forget the handy utility methods getFirst() and getLast()...
-      //  Assert.assertEquals("Highest total order value", Double.valueOf(857.0), sortedTotalValues.getLast());
-       // Assert.assertEquals("Lowest total order value", Double.valueOf(71.0), sortedTotalValues.getFirst());
+        assertThat(Iterables.getLast(sortedTotalValues, null)).isEqualTo(857.0);
+        assertThat(Iterables.getFirst(sortedTotalValues, null)).isEqualTo(71.0);
     }
 
     /**
@@ -48,8 +50,8 @@ public class Exercise6Test extends CompanyDomainForKata
         List<Double> sortedTotalValues = null;
 
         // Don't forget the handy utility methods getFirst() and getLast()...
-  //      Assert.assertEquals("Highest total order value", 857.0, sortedTotalValues.getLast(), 0.0);
-  //      Assert.assertEquals("Lowest total order value", 71.0, sortedTotalValues.getFirst(), 0.0);
+        assertThat(Iterables.getLast(sortedTotalValues, null)).isEqualTo(857.0);
+        assertThat(Iterables.getFirst(sortedTotalValues, null)).isEqualTo(71.0);
     }
 
     /**
@@ -59,7 +61,7 @@ public class Exercise6Test extends CompanyDomainForKata
     public void maximumTotalOrderValue()
     {
         Double maximumTotalOrderValue = null;
-        Assert.assertEquals("max value", Double.valueOf(857.0), maximumTotalOrderValue);
+        assertThat(maximumTotalOrderValue).isEqualTo(857.0);
     }
 
     /**
@@ -69,7 +71,7 @@ public class Exercise6Test extends CompanyDomainForKata
     public void maximumTotalOrderValueUsingPrimitives()
     {
         double maximumTotalOrderValue = 0.0;
-        Assert.assertEquals("max value", 857.0, maximumTotalOrderValue, 0.0);
+        assertThat(maximumTotalOrderValue).isEqualTo(857.0);
     }
 
     /**
@@ -79,7 +81,7 @@ public class Exercise6Test extends CompanyDomainForKata
     public void customerWithMaxTotalOrderValue()
     {
         Customer customerWithMaxTotalOrderValue = null;
-        Assert.assertEquals(this.company.getCustomerNamed("Mary"), customerWithMaxTotalOrderValue);
+        assertThat(customerWithMaxTotalOrderValue).isEqualTo(company.getCustomerNamed("Mary"));
     }
 
     /**
@@ -89,10 +91,7 @@ public class Exercise6Test extends CompanyDomainForKata
     public void supplierNamesAsTildeDelimitedString()
     {
         String tildeSeparatedNames = null;
-        Assert.assertEquals(
-                "tilde separated names",
-                "Shedtastic~Splendid Crocks~Annoying Pets~Gnomes 'R' Us~Furniture Hamlet~SFD~Doxins",
-                tildeSeparatedNames);
+        assertThat(tildeSeparatedNames).isEqualTo("Shedtastic~Splendid Crocks~Annoying Pets~Gnomes 'R' Us~Furniture Hamlet~SFD~Doxins");
     }
 
     /**
@@ -105,8 +104,9 @@ public class Exercise6Test extends CompanyDomainForKata
     @Test
     public void deliverOrdersToLondon()
     {
-      //  Verify.assertAllSatisfy(this.company.getCustomerNamed("Fred").getOrders(), Order::isDelivered);
-      //  Verify.assertNoneSatisfy(this.company.getCustomerNamed("Mary").getOrders(), Order::isDelivered);
-      //  Verify.assertAllSatisfy(this.company.getCustomerNamed("Bill").getOrders(), Order::isDelivered);
+        assertThat(this.company.getCustomerNamed("Fred").getOrders().stream().allMatch(Order::isDelivered)).isTrue();
+        assertThat(this.company.getCustomerNamed("Mary").getOrders().stream().anyMatch(Order::isDelivered)).isFalse();
+        assertThat(this.company.getCustomerNamed("Bill").getOrders().stream().allMatch(Order::isDelivered)).isTrue();
+
     }
 }
