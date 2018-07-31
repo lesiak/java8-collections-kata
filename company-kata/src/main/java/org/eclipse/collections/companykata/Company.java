@@ -14,6 +14,7 @@ import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A company has a {@link ArrayList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
@@ -93,7 +94,10 @@ public class Company
      */
     public Customer getCustomerNamed(String name)
     {
-        Assert.fail("Implement this method as part of Exercise 2");
-        return null;
+        Optional<Customer> customerOptional = getCustomers()
+                .stream()
+                .filter(c -> name.equals(c.getName()))
+                .findAny();
+        return customerOptional.orElse(null);
     }
 }

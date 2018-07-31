@@ -10,13 +10,13 @@
 
 package org.eclipse.collections.companykata;
 
-import com.google.common.truth.Truth;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -36,7 +36,7 @@ public class Exercise2Test extends CompanyDomainForKata
     @Test
     public void customerFromLondonPredicate()
     {
-        Predicate<Customer> predicate = c -> "London".equals(c.getCity());
+        Predicate<Customer> predicate = isCustomerFromLondon();
         String predicateClass = predicate.getClass().getSimpleName();
         Assert.assertTrue(
                 "Solution should use Predicates.attributeEquals() or a lambda but used " + predicateClass,
@@ -49,38 +49,61 @@ public class Exercise2Test extends CompanyDomainForKata
                 predicate.test(customerFromLondon));
     }
 
+    private static Predicate<Customer> isCustomerFromLondon() {
+        return c -> "London".equals(c.getCity());
+    }
+
     @Test
     public void doAnyCustomersLiveInLondon()
     {
-        boolean anyCustomersFromLondon = false;
+        boolean anyCustomersFromLondon = company.getCustomers()
+                .stream()
+                .anyMatch(isCustomerFromLondon());
+
         assertThat(anyCustomersFromLondon).isTrue();
     }
 
     @Test
     public void doAllCustomersLiveInLondon()
     {
-        boolean allCustomersFromLondon = true;
-        assertThat(allCustomersFromLondon).isTrue();
+        boolean allCustomersFromLondon = company.getCustomers()
+                .stream()
+                .allMatch(isCustomerFromLondon());
+
+        assertThat(allCustomersFromLondon).isFalse();
     }
 
     @Test
     public void howManyCustomersLiveInLondon()
     {
-        int numberOfCustomerFromLondon = 0;
+        long numberOfCustomerFromLondon = company.getCustomers()
+                .stream()
+                .filter(isCustomerFromLondon())
+                .count();
         assertThat(numberOfCustomerFromLondon).isEqualTo(2);
     }
 
     @Test
     public void getLondonCustomers()
     {
-        List<Customer> customersFromLondon = null;
+        List<Customer> customersFromLondon = company.getCustomers()
+                .stream()
+                .filter(isCustomerFromLondon())
+                .collect(Collectors.toList());
+
         assertThat(customersFromLondon).hasSize(2);
     }
 
     @Test
     public void getCustomersWhoDontLiveInLondon()
     {
-        List<Customer> customersNotFromLondon = null;
+        Predicate<Customer> fromLondon = isCustomerFromLondon();
+        Predicate<Customer> notFromLondon = customer -> !fromLondon.test(customer);
+        List<Customer> customersNotFromLondon = company.getCustomers()
+                .stream()
+                .filter(notFromLondon)
+                .collect(Collectors.toList());
+
         assertThat(customersNotFromLondon).hasSize(1);
     }
 
@@ -90,7 +113,9 @@ public class Exercise2Test extends CompanyDomainForKata
     @Test
     public void getCustomersWhoDoAndDoNotLiveInLondon()
     {
-        Map<Boolean, List<Customer>> customers = null;
+        Map<Boolean, List<Customer>> customers = this.company.getCustomers()
+                .stream()
+                .collect(Collectors.partitioningBy(isCustomerFromLondon()));
         List<Customer> selectedCustomers = customers.get(true);
         List<Customer> rejectedCustomers = customers.get(false);
         assertThat(selectedCustomers).hasSize(2);
