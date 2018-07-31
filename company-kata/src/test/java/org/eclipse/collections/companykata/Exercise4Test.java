@@ -10,12 +10,14 @@
 
 package org.eclipse.collections.companykata;
 
-import java.util.List;
-import java.util.function.Predicate;
-
 import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.function.Predicate;
+
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * Below are links to APIs that may be helpful during these exercises.
@@ -34,15 +36,14 @@ public class Exercise4Test extends CompanyDomainForKata
     {
         List<String> supplierNames = null;
 
-        List<String> expectedSupplierNames = Lists.newArrayList(
+        assertThat(supplierNames).containsExactly(
                 "Shedtastic",
                 "Splendid Crocks",
                 "Annoying Pets",
                 "Gnomes 'R' Us",
                 "Furniture Hamlet",
                 "SFD",
-                "Doxins");
-        Assert.assertEquals(expectedSupplierNames, supplierNames);
+                "Doxins").inOrder();
     }
 
     /**
@@ -68,8 +69,8 @@ public class Exercise4Test extends CompanyDomainForKata
 
         // Find one supplier that supplies toasters.
         Supplier toasterSupplier = null;
-        Assert.assertNotNull("toaster supplier", toasterSupplier);
-        Assert.assertEquals("Doxins", toasterSupplier.getName());
+        assertThat(toasterSupplier).isNotNull();
+        assertThat(toasterSupplier.getName()).isEqualTo("Doxins");
     }
 
     /**
@@ -81,7 +82,7 @@ public class Exercise4Test extends CompanyDomainForKata
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
         List<Double> orderValues = null;
         List<Double> filtered = null;
-        Assert.assertEquals(Lists.newArrayList(372.5, 1.75), filtered);
+        assertThat(filtered).containsExactly(372.5, 1.75).inOrder();
     }
 
     /**
@@ -93,7 +94,7 @@ public class Exercise4Test extends CompanyDomainForKata
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
         List<Double> orderValues = null;
         List<Double> filtered = null;
-        Assert.assertEquals(Lists.newArrayList(372.5, 1.75), filtered);
+        assertThat(filtered).containsExactly(372.5, 1.75).inOrder();
     }
 
     /**
@@ -104,6 +105,6 @@ public class Exercise4Test extends CompanyDomainForKata
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
         List<Order> filtered = null;
-       // Assert.assertEquals(Lists.newArrayList(Iterate.getFirst(this.company.getMostRecentCustomer().getOrders())), filtered);
+        assertThat(filtered).isEqualTo(Lists.newArrayList(this.company.getMostRecentCustomer().getOrders()).stream().findFirst().get());
     }
 }
