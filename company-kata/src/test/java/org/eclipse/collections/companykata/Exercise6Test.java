@@ -14,7 +14,10 @@ package org.eclipse.collections.companykata;
 import com.google.common.collect.Iterables;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -34,7 +37,11 @@ public class Exercise6Test extends CompanyDomainForKata
     @Test
     public void sortedTotalOrderValue()
     {
-        List<Double> sortedTotalValues = null;
+        List<Double> sortedTotalValues = company.getCustomers()
+                .stream()
+                .map(Customer::getTotalOrderValue)
+                .sorted()
+                .collect(Collectors.toList());
 
         // Don't forget the handy utility methods getFirst() and getLast()...
         assertThat(Iterables.getLast(sortedTotalValues, null)).isEqualTo(857.0);
@@ -47,7 +54,12 @@ public class Exercise6Test extends CompanyDomainForKata
     @Test
     public void sortedTotalOrderValueUsingPrimitives()
     {
-        List<Double> sortedTotalValues = null;
+        List<Double> sortedTotalValues = company.getCustomers()
+                .stream()
+                .mapToDouble(Customer::getTotalOrderValue)
+                .sorted()
+                .boxed()
+                .collect(Collectors.toList());
 
         // Don't forget the handy utility methods getFirst() and getLast()...
         assertThat(Iterables.getLast(sortedTotalValues, null)).isEqualTo(857.0);
@@ -60,7 +72,11 @@ public class Exercise6Test extends CompanyDomainForKata
     @Test
     public void maximumTotalOrderValue()
     {
-        Double maximumTotalOrderValue = null;
+        Double maximumTotalOrderValue = company.getCustomers()
+                .stream()
+                .map(Customer::getTotalOrderValue)
+                .max(Comparator.naturalOrder())
+                .get();
         assertThat(maximumTotalOrderValue).isEqualTo(857.0);
     }
 
@@ -70,7 +86,11 @@ public class Exercise6Test extends CompanyDomainForKata
     @Test
     public void maximumTotalOrderValueUsingPrimitives()
     {
-        double maximumTotalOrderValue = 0.0;
+        double maximumTotalOrderValue = company.getCustomers()
+                .stream()
+                .mapToDouble(Customer::getTotalOrderValue)
+                .max()
+                .getAsDouble();
         assertThat(maximumTotalOrderValue).isEqualTo(857.0);
     }
 
@@ -80,7 +100,10 @@ public class Exercise6Test extends CompanyDomainForKata
     @Test
     public void customerWithMaxTotalOrderValue()
     {
-        Customer customerWithMaxTotalOrderValue = null;
+        Customer customerWithMaxTotalOrderValue = company.getCustomers()
+                .stream()
+                .max(Comparator.comparingDouble(Customer::getTotalOrderValue))
+                .get();
         assertThat(customerWithMaxTotalOrderValue).isEqualTo(company.getCustomerNamed("Mary"));
     }
 
@@ -90,7 +113,9 @@ public class Exercise6Test extends CompanyDomainForKata
     @Test
     public void supplierNamesAsTildeDelimitedString()
     {
-        String tildeSeparatedNames = null;
+        String tildeSeparatedNames = Arrays.stream(company.getSuppliers())
+                .map(Supplier::getName)
+                .collect(Collectors.joining("~"));
         assertThat(tildeSeparatedNames).isEqualTo("Shedtastic~Splendid Crocks~Annoying Pets~Gnomes 'R' Us~Furniture Hamlet~SFD~Doxins");
     }
 
@@ -104,6 +129,12 @@ public class Exercise6Test extends CompanyDomainForKata
     @Test
     public void deliverOrdersToLondon()
     {
+        company.getCustomers()
+                .stream()
+                .filter(customer -> customer.livesIn("London"))
+                .flatMap(customer -> customer.getOrders().stream())
+                .forEach(Order::deliver);
+
         assertThat(this.company.getCustomerNamed("Fred").getOrders().stream().allMatch(Order::isDelivered)).isTrue();
         assertThat(this.company.getCustomerNamed("Mary").getOrders().stream().anyMatch(Order::isDelivered)).isFalse();
         assertThat(this.company.getCustomerNamed("Bill").getOrders().stream().allMatch(Order::isDelivered)).isTrue();

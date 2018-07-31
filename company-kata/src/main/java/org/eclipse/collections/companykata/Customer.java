@@ -53,4 +53,9 @@ public class Customer
     {
         return this.orders.stream().mapToDouble(Order::getValue).sum();
     }
+
+    public boolean livesIn(String city)
+    {
+        return this.city.equals(city);
+    }
 }
