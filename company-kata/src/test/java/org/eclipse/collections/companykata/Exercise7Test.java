@@ -10,8 +10,14 @@
 
 package org.eclipse.collections.companykata;
 
+import com.google.common.truth.Truth;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.Map;
+
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * Below are links to APIs that may be helpful during these exercises.
@@ -28,14 +34,13 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void customersByCity()
     {
-//        MutableListMultimap<String, Customer> multimap = null;
-//
-//        Assert.assertEquals(Lists.mutable.with(this.company.getCustomerNamed("Mary")), multimap.get("Liphook"));
-//        Assert.assertEquals(
-//                Lists.mutable.with(
-//                        this.company.getCustomerNamed("Fred"),
-//                        this.company.getCustomerNamed("Bill")),
-//                multimap.get("London"));
+        Map<String, List<Customer>> multimap = null;
+
+        assertThat(multimap.get("Liphook")).containsExactly(company.getCustomerNamed("Mary"));
+        assertThat(multimap.get("London")).containsExactly(
+                company.getCustomerNamed("Fred"),
+                company.getCustomerNamed("Bill")
+        ).inOrder();
     }
 
     /**
@@ -45,9 +50,9 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void itemsBySuppliers()
     {
-      //  MutableMultimap<String, Supplier> itemsToSuppliers = null;
+        Map<String, List<Supplier>> itemsToSuppliers = null;
 
-      //  Verify.assertIterableSize("should be 2 suppliers for sofa", 2, itemsToSuppliers.get("sofa"));
+        assertThat(itemsToSuppliers.get("sofa")).hasSize(2);
     }
 
     /**
