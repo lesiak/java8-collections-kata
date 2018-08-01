@@ -10,16 +10,16 @@
 
 package org.eclipse.collections.petkata;
 
-import org.eclipse.collections.api.block.function.Function;
-import org.eclipse.collections.api.block.predicate.Predicate;
-import org.eclipse.collections.api.block.predicate.Predicate2;
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.set.MutableSet;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.Sets;
-import org.eclipse.collections.impl.test.Verify;
+import com.google.common.truth.Truth;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * In the slides leading up to this exercise you should have learned about the following APIs.
@@ -80,27 +80,25 @@ public class Exercise2Test extends PetDomainForKata
     @Test
     public void getPeopleWithPets()
     {
-        MutableList<Person> petPeople = this.people; // replace with only the pet owners
-        Verify.assertSize(7, petPeople);
+        List<Person> petPeople = this.people; // replace with only the pet owners
+        assertThat(petPeople).hasSize(7);
     }
 
     @Test
     public void getAllPetsOfAllPeople()
     {
         Function<Person, Iterable<PetType>> function = person -> person.getPetTypes();
-        MutableSet<PetType> petTypes = null;
-        Assert.assertEquals(
-                Sets.mutable.with(PetType.CAT, PetType.DOG, PetType.TURTLE, PetType.HAMSTER, PetType.BIRD, PetType.SNAKE),
-                petTypes);
+        Set<PetType> petTypes = null;
+        assertThat(petTypes).containsExactly(PetType.CAT, PetType.DOG, PetType.TURTLE, PetType.HAMSTER, PetType.BIRD, PetType.SNAKE);
     }
 
     @Test
     public void getFirstNamesOfAllPeople()
     {
-        MutableList<String> firstNames = null;  // Transform this.people into a list of first names
-        Assert.assertEquals(
-                Lists.mutable.with("Mary", "Bob", "Ted", "Jake", "Barry", "Terry", "Harry", "John"),
-                firstNames);
+        List<String> firstNames = null;  // Transform this.people into a list of first names
+        assertThat(firstNames).containsExactly(
+                "Mary", "Bob", "Ted", "Jake", "Barry", "Terry", "Harry", "John")
+                .inOrder();
     }
 
     @Test
@@ -129,15 +127,15 @@ public class Exercise2Test extends PetDomainForKata
     public void getPeopleWithCatsRefactor()
     {
         //use method reference, NOT lambdas, to solve the problem below
-        MutableList<Person> peopleWithCatsMethodRef = null;
-        Verify.assertSize(2, peopleWithCatsMethodRef);
+        List<Person> peopleWithCatsMethodRef = null;
+        assertThat(peopleWithCatsMethodRef).hasSize(2);
     }
 
     @Test
     public void getPeopleWithoutCatsRefactor()
     {
         //use method reference, NOT lambdas, to solve the problem below
-        MutableList<Person> peopleWithoutCatsMethodRef = null;
-        Verify.assertSize(6, peopleWithoutCatsMethodRef);
+        List<Person> peopleWithoutCatsMethodRef = null;
+        assertThat(peopleWithoutCatsMethodRef).hasSize(6);
     }
 }

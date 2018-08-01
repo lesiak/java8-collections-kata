@@ -10,18 +10,19 @@
 
 package org.eclipse.collections.petkata;
 
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.impl.factory.Lists;
+import com.google.common.collect.Lists;
 import org.junit.Before;
+
+import java.util.List;
 
 public abstract class PetDomainForKata
 {
-    protected MutableList<Person> people;
+    protected List<Person> people;
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
-        this.people = Lists.mutable.with(
+        this.people = Lists.newArrayList(
                 new Person("Mary", "Smith").addPet(PetType.CAT, "Tabby", 2),
                 new Person("Bob", "Smith")
                         .addPet(PetType.CAT, "Dolly", 3)
@@ -39,6 +40,10 @@ public abstract class PetDomainForKata
 
     public Person getPersonNamed(String fullName)
     {
-        return this.people.detectWith(Person::named, fullName);
+        return this.people
+                .stream()
+                .filter(p -> p.named(fullName))
+                .findFirst()
+                .orElse(null);
     }
 }

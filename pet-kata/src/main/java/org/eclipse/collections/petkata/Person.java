@@ -10,17 +10,16 @@
 
 package org.eclipse.collections.petkata;
 
-import org.eclipse.collections.api.bag.MutableBag;
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.impl.bag.mutable.HashBag;
-import org.eclipse.collections.impl.block.factory.Predicates2;
-import org.eclipse.collections.impl.list.mutable.FastList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Person
 {
     private final String firstName;
     private final String lastName;
-    private final MutableList<Pet> pets = FastList.newList();
+    private final List<Pet> pets = new ArrayList<>();
 
     public Person(String firstName, String lastName)
     {
@@ -45,17 +44,20 @@ public class Person
 
     public boolean hasPet(PetType petType)
     {
-        return this.pets.anySatisfyWith(Predicates2.attributeEqual(Pet::getType), petType);
+        return this.pets.stream()
+                .anyMatch(pet -> petType.equals(pet.getType()));
     }
 
-    public MutableList<Pet> getPets()
+    public List<Pet> getPets()
     {
         return this.pets;
     }
 
-    public MutableBag<PetType> getPetTypes()
+    public Set<PetType> getPetTypes()
     {
-        return this.pets.collect(Pet::getType, HashBag.newBag());
+        return this.pets.stream()
+            .map(Pet::getType)
+            .collect(Collectors.toSet());
     }
 
     public Person addPet(PetType petType, String name, int age)
