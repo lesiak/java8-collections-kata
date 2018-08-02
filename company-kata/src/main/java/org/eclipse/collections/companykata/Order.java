@@ -13,6 +13,7 @@ package org.eclipse.collections.companykata;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 /**
  * Has a number, a {@link Customer}, a {@link List} of {@link LineItem}s, and a boolean that states whether or not the order
@@ -49,6 +50,11 @@ public class Order
     public void addLineItem(LineItem aLineItem)
     {
         this.lineItems.add(aLineItem);
+    }
+
+    public void addLineItems(LineItem item, int count)
+    {
+        IntStream.range(0, count).forEach((i) -> this.lineItems.add(item));
     }
 
     public List<LineItem> getLineItems()
